@@ -557,6 +557,7 @@ if __name__ == "__main__":
                 fraud_balanced = fraud_encoded.copy()
     
     # --- Process Credit Card Data ---
+    
     credit_processed = preprocess_creditcard_data(credit_data.copy())
 
     if credit_processed.empty:
