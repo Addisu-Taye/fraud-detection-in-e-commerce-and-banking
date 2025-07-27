@@ -51,6 +51,7 @@ def load_data(path='data/cleaned/processed_fraud_data.csv'):
             raise KeyError("Target column 'class' not found.")
         
         # Drop rows where the target 'class' is NaN
+
         initial_rows = len(df)
         df.dropna(subset=['class'], inplace=True)
         if len(df) < initial_rows:
@@ -203,5 +204,5 @@ def run_training_pipeline():
         print("\n❌ No models were successfully trained and evaluated.")
 
 if __name__ == "__main__":
-    
+
     run_training_pipeline()
