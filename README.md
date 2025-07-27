@@ -1,100 +1,150 @@
-# Fraud Detection Data Preprocessing and EDA Pipeline
+# 🧠 Improved Fraud Detection for E-Commerce and Bank Transactions  
+**A Data Science Project at Adey Innovations Inc.**  
+*Submitted by: Addisu Taye*  
+*Date: July 27, 2025*
 
-## Overview
+---
 
-This repository contains `preprocess.py`, a comprehensive Python script designed to prepare raw transaction data for fraud detection machine learning models. It handles two distinct datasets: e-commerce transaction data (`Fraud_Data.csv`) and credit card transaction data (`creditcard.csv`). The script performs robust data cleaning, feature engineering tailored to each dataset, exploratory data analysis (EDA), and addresses class imbalance, producing clean, structured datasets ready for model training.
+## 📌 Overview
 
-## Features
+This project aims to improve fraud detection in **e-commerce** and **banking** by building accurate, explainable machine learning models. As a data scientist at **Adey Innovations Inc.**, I addressed class imbalance, engineered behavioral and temporal features, and trained models to minimize financial loss while preserving user experience.
 
-The `preprocess.py` script includes the following key functionalities:
+The solution includes:
+- Robust preprocessing and geolocation mapping
+- Feature engineering (e.g., `time_since_signup`, IP-to-country)
+- Handling extreme class imbalance with SMOTE
+- Training and comparing **Logistic Regression** and **Random Forest**
+- Model evaluation using **F1-Score, AUC-PR, and AUC-ROC**
+- Model interpretation with **SHAP** for business transparency
 
-* **Data Loading**: Loads `Fraud_Data.csv`, `IpAddress_to_Country.csv`, and `creditcard.csv` from the `data/raw` directory.
-* **E-commerce Data Preprocessing (`Fraud_Data.csv`)**:
-    * **Timestamp Conversion & Cleaning**: Converts `signup_time` and `purchase_time` to datetime objects, handling errors and missing values.
-    * **IP Address-to-Country Mapping**: Converts IP addresses to integers and uses `IpAddress_to_Country.csv` to map transactions to their respective countries, providing geographical context.
-    * **Time-based Feature Engineering**: Creates new features like `time_since_signup` (in hours), `hour_of_day`, and `day_of_week` from timestamps to capture temporal patterns.
-    * **Categorical Feature Encoding**: Applies One-Hot Encoding (`source`, `browser`, `sex`, `country`) to transform nominal features into a numerical format.
-    * **Numerical Feature Scaling**: Standardizes numerical features (`purchase_value`, `age`, `time_since_signup`, `hour_of_day`, `day_of_week`) using `StandardScaler`.
-* **Credit Card Data Preprocessing (`creditcard.csv`)**:
-    * **Numerical Feature Scaling**: Scales `Time` and `Amount` features using `StandardScaler` to bring them to a comparable range with the anonymized `V` features.
-* **Class Imbalance Handling**: Applies the **Synthetic Minority Over-sampling Technique (SMOTE)** to both e-commerce and credit card datasets to balance the highly skewed class distributions (fraud vs. non-fraud), crucial for effective model training.
-* **Exploratory Data Analysis (EDA)**:
-    * Generates various plots (e.g., class distributions, age distribution, time patterns, correlation matrices) for both datasets.
-    * Saves descriptive statistics and class summaries to CSV files.
-* **Output Management**: Saves processed data, plots, and summary statistics to designated output directories.
-* **Comprehensive Logging**: Provides detailed logs for each step of the preprocessing pipeline, aiding in monitoring and debugging.
+---
 
-## Datasets
+## 📁 Project Structure
+```
+fraud-detection-ecom-banking/
+├── data/
+│   ├── raw/                # Original datasets
+│   └── cleaned/            # Preprocessed datasets
+├── src/
+│   ├── preprocess.py       # Data cleaning & feature engineering
+│   ├── train.py            # Model training
+│   └── explain.py          # SHAP-based interpretation
+├── plots/                  # EDA and model visualizations
+├── data_summary/           # Summary statistics (CSV)
+├── models/                 # Trained model binaries
+├── reports/                # Interim and final reports
+├── notebooks/              # Jupyter/Colab notebooks
+└── README.md
+```
 
-Ensure the following raw data files are placed in the `data/raw` directory:
+---
 
-* `Fraud_Data.csv`: E-commerce transaction data, including user and transaction details, and a fraud label (`class`).
-* `IpAddress_to_Country.csv`: A lookup table for mapping IP address ranges to countries.
-* `creditcard.csv`: Bank transaction data with anonymized features (`V1-V28`), transaction time, amount, and a fraud label (`Class`).
+## 🛠️ Task 1: Data Analysis & Preprocessing
 
-## Installation
+### ✅ Key Steps
+- **Data Cleaning**: Removed duplicates, converted timestamps, handled missing values.
+- **IP Geolocation Mapping**: Converted IP addresses to integers and merged with `IpAddress_to_Country.csv` to add `country` feature.
+- **Feature Engineering**:
+  - `time_since_signup` (hours between signup and purchase)
+  - `hour_of_day` and `day_of_week` from `purchase_time`
+  - One-Hot Encoding for `source`, `browser`, `sex`, `country`
+- **Class Imbalance**: Applied **SMOTE** to balance the minority fraud class in training data.
+- **Scaling**: Used `StandardScaler` on numerical features.
 
-1.  **Clone the repository** (or download `preprocess.py`):
-    ```bash
-    git clone <repository_url>
-    cd <repository_name>
-    ```
+### 📊 EDA Insights
+- Severe class imbalance: <1% fraud in both datasets.
+- Fraud spikes during late-night hours (`hour_of_day`).
+- High `purchase_value` and certain countries show higher fraud rates.
+- Users with very short `time_since_signup` are more likely to be fraudulent.
 
-2.  **Create a virtual environment** (recommended):
-    ```bash
-    python -m venv venv
-    # On Windows
-    .\venv\Scripts\activate
-    # On macOS/Linux
-    source venv/bin/activate
-    ```
+---
 
-3.  **Install the required Python libraries**:
-    ```bash
-    pip install pandas numpy scikit-learn imbalanced-learn matplotlib seaborn python-docx
-    ```
+## 🤖 Task 2: Model Building & Training
 
-## Usage
+### 📦 Models Trained
+| Model                | Purpose                   |
+|---------------------|---------------------------|
+| **Logistic Regression** | Interpretable baseline     |
+| **Random Forest**       | High-performance ensemble |
 
-1.  Place the raw datasets (`Fraud_Data.csv`, `IpAddress_to_Country.csv`, `creditcard.csv`) into a directory named `data/raw` in the same location as `preprocess.py`.
-    ```
-    .
-    ├── data/
-    │   └── raw/
-    │       ├── Fraud_Data.csv
-    │       ├── IpAddress_to_Country.csv
-    │       └── creditcard.csv
-    └── preprocess.py
-    ```
-2.  Run the preprocessing script from your terminal:
-    ```bash
-    python preprocess.py
-    ```
+### 📈 Evaluation Metrics (Imbalanced Data)
+- **F1-Score**: Balances precision and recall
+- **AUC-PR**: More reliable than ROC-AUC for rare events
+- **Confusion Matrix**: Analyze false positives/negatives
 
-## Output
+### 📊 Performance Results
 
-Upon successful execution, the script will create the following directories and files:
+| Dataset        | Model              | F1-Score | AUC-ROC | AUC-PR |
+|----------------|--------------------|----------|---------|--------|
+| **E-commerce** | Logistic Regression| 0.69     | 0.77    | 0.78   |
+|                | **Random Forest**  | **0.97** | **0.98**| **0.99**|
+| **Credit Card**| Logistic Regression| 0.95     | 0.99    | 0.99   |
+|                | **Random Forest**  | **1.00** | **1.00**| **1.00**|
 
-* `data/cleaned/`: Contains the processed datasets.
-    * `processed_fraud_data.csv`: Cleaned, feature-engineered, scaled, and balanced e-commerce fraud data.
-    * `processed_creditcard.csv`: Cleaned, scaled, and balanced credit card transaction data.
-* `plots/`: Contains various EDA visualizations in PNG format.
-    * `fraud_data_class_distribution.png`
-    * `fraud_data_age_distribution.png`
-    * `fraud_data_hour_of_day_distribution.png`
-    * `fraud_data_day_of_week_distribution.png`
-    * `fraud_data_feature_correlation.png`
-    * `creditcard_data_class_distribution.png`
-    * `creditcard_data_feature_correlation.png`
-    * (and potentially other plots if added in the future)
-* `data_summary/`: Contains summary statistics and class distribution reports in CSV format.
-    * `fraud_data_descriptive_statistics.csv`
-    * `fraud_data_class_summary.csv`
-    * `fraud_data_country_distribution.csv`
-    * `fraud_data_source_distribution.csv`
-    * `fraud_data_browser_distribution.csv`
-    * `creditcard_data_descriptive_statistics.csv`
-    * `creditcard_data_class_summary.csv`
-    * (and potentially other summaries)
+### 🏆 Final Model: **Random Forest**
+**Justification**:
+- Significantly outperforms Logistic Regression on all metrics.
+- High **AUC-PR (0.99)** ensures strong performance on the minority fraud class.
+- Handles non-linear patterns in user behavior and transaction timing.
+- Will be interpreted using **SHAP** for transparency (Task 3).
 
-## Project Structure
+---
+
+## 🔍 Task 3: Model Explainability (Upcoming)
+
+- Use **SHAP (SHapley Additive exPlanations)** to interpret Random Forest predictions.
+- Generate:
+  - **Summary Plot**: Global feature importance
+  - **Force Plot**: Local explanation for individual transactions
+- Extract business insights:
+  - Which features drive fraud predictions?
+  - How can stakeholders act on these insights?
+
+---
+
+## 🚀 How to Run
+
+1. **Clone the repo**:
+```bash
+git clone https://github.com/Addisu-Taye/fraud-detection-in-e-commerce-and-banking.git
+cd fraud-detection-in-e-commerce-and-banking
+```
+
+2. **Install dependencies**:
+```bash
+pip install -r requirements.txt
+```
+
+3. **Run preprocessing**:
+```bash
+python src/preprocess.py
+```
+
+4. **Train models**:
+```bash
+python src/train.py
+```
+
+5. **Generate explanations (upcoming)**:
+```bash
+python src/explain.py
+```
+
+---
+
+## 📦 `requirements.txt`
+```
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.2.0
+imbalanced-learn>=0.10.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+shap>=0.42.0
+jupyter>=1.0.0
+```
+
+Install with:
+```bash
+pip install -r requirements.txt
+```
