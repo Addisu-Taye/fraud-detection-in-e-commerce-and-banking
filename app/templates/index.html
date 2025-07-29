@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraud Detection Dashboard - Adey Innovations Inc.</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .navbar {
+            background-color: #0d6efd !important;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: none;
+        }
+        .card-header {
+            background-color: #0d6efd;
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        .result-card {
+            background-color: #f8f9fa;
+            border-left: 5px solid #0d6efd;
+        }
+        .explanation-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #f1f3f5;
+            border-radius: 6px;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+        .feature-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .positive {
+            color: #dc3545;
+            font-weight: 500;
+        }
+        .negative {
+            color: #198754;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-shield-alt"></i> Fraud Detection Dashboard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about"><i class="fas fa-info-circle"></i> About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h1 class="display-5 fw-bold">Fraud Detection System</h1>
+                    <p class="lead text-muted">Advanced machine learning model to detect fraudulent transactions in real-time</p>
+                    <div class="badge bg-primary">Random Forest Classifier</div>
+                    <div class="badge bg-success ms-2">SHAP Explainability</div>
+                </div>
+
+                <!-- Prediction Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-calculator"></i> Transaction Fraud Prediction
+                    </div>
+                    <div class="card-body">
+                        <form id="fraudForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="purchase_value" class="form-label">Purchase Value ($)</label>
+                                    <input type="number" class="form-control" id="purchase_value" step="0.01" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="age" class="form-label">User Age</label>
+                                    <input type="number" class="form-control" id="age" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="time_since_signup" class="form-label">Time Since Signup (hours)</label>
+                                    <input type="number" class="form-control" id="time_since_signup" step="0.1" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="hour_of_day" class="form-label">Hour of Day (0-23)</label>
+                                    <select class="form-select" id="hour_of_day" required>
+                                        <option value="">Select hour</option>
+                                        <!-- Options will be filled by JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Country</label>
+                                <select class="form-select" id="country" required>
+                                    <option value="">Select country</option>
+                                    <!-- Options will be filled by JavaScript -->
+                                </select>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="source" class="form-label">Source</label>
+                                    <select class="form-select" id="source" required>
+                                        <option value="">Select source</option>
+                                        <option value="Ads">Ads</option>
+                                        <option value="Direct">Direct</option>
+                                        <option value="SEO">SEO</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="browser" class="form-label">Browser</label>
+                                    <select class="form-select" id="browser" required>
+                                        <option value="">Select browser</option>
+                                        <option value="Chrome">Chrome</option>
+                                        <option value="Firefox">Firefox</option>
+                                        <option value="Safari">Safari</option>
+                                        <option value="Edge">Edge</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="sex" class="form-label">Sex</
