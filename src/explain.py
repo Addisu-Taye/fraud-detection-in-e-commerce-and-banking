@@ -129,6 +129,7 @@ def generate_waterfall_plot(model, X):
         max_display=10,
         show=False
     )
+    
     plt.title(f"SHAP Waterfall Plot: Breakdown for Transaction #{sample_idx}")
     plt.tight_layout()
     plt.savefig(f"{PLOTS_DIR}/shap_waterfall_plot.png", dpi=300, bbox_inches='tight')
@@ -152,7 +153,7 @@ def main():
     
     # Final message
     print("\n✅ SHAP Analysis Complete!")
-    
+
     print(f"📊 All plots saved in the '{PLOTS_DIR}' folder.")
     print("📌 Use these plots in your final report to explain model decisions.")
 
