@@ -129,8 +129,9 @@ def generate_waterfall_plot(model, X):
         max_display=10,
         show=False
     )
-    
+
     plt.title(f"SHAP Waterfall Plot: Breakdown for Transaction #{sample_idx}")
+    
     plt.tight_layout()
     plt.savefig(f"{PLOTS_DIR}/shap_waterfall_plot.png", dpi=300, bbox_inches='tight')
     plt.close()
