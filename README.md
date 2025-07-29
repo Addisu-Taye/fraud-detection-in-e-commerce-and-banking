@@ -39,7 +39,7 @@ fraud-detection-ecom-banking/
 
 ---
 
-## 🛠️ Task 1: Data Analysis & Preprocessing
+## 🛠️ Data Analysis & Preprocessing
 
 ### ✅ Key Steps
 - **Data Cleaning**: Removed duplicates, converted timestamps, handled missing values.
@@ -59,7 +59,7 @@ fraud-detection-ecom-banking/
 
 ---
 
-## 🤖 Task 2: Model Building & Training
+## 🤖 Model Building & Training
 
 ### 📦 Models Trained
 | Model                | Purpose                   |
@@ -90,7 +90,7 @@ fraud-detection-ecom-banking/
 
 ---
 
-## 🔍 Task 3: Model Explainability (Upcoming)
+## 🔍 Model Explainability
 
 - Use **SHAP (SHapley Additive exPlanations)** to interpret Random Forest predictions.
 - Generate:
